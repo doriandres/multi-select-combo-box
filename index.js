@@ -1,0 +1,5 @@
+import '@webcomponents/webcomponentsjs/webcomponents-loader'
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles'
+import './multi-select-combo-box/multi-select-combo-box'
+import '@vaadin/vaadin-combo-box/vaadin-combo-box-light'
+import '@vaadin/vaadin-text-field/vaadin-text-field'
