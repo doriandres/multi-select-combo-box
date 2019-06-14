@@ -1,6 +1,6 @@
 # Multi select combo box
 
-Multi select combo box for Polymer 3 apps based on vaadin-combo-box component
+Multi select combo box for LitElement apps based on vaadin-combo-box component
 
 ## Usage
 
