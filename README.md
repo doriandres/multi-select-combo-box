@@ -1,19 +1,6 @@
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/selvinfehric/multi-select-combo-box)
-
 # Multi select combo box
 
-Multi select combo box for Polymer 2 apps based on vaadin-combo-box component
-
-## Installation
-
-The element can be installed using bower
-```
-    bower install selvinfehric/multi-select-combo-box
-```
-If you want to save it in bower.json file, remember to add flag `--save`
-```
-    bower install selvinfehric/multi-select-combo-box --save
-```
+Multi select combo box for Polymer 3 apps based on vaadin-combo-box component
 
 ## Usage
 
@@ -51,8 +38,4 @@ If you want to save it in bower.json file, remember to add flag `--save`
 
 ## Credits
 
-Credits go to https://github.com/tomivirkki answer on this issue https://github.com/vaadin/vaadin-combo-box/issues/88
-
-## License
-
-This project is licensed under the terms of the MIT license.
+Credits go to https://github.com/selvinfehric answer on this issue https://github.com/vaadin/vaadin-combo-box/issues/88
