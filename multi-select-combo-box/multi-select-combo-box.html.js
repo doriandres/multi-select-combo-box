@@ -9,7 +9,7 @@ export const template = function (instance) { return (function () {
                     ${
                         this.selectedItems.map(item => html`
                             <div class="token">
-                                ${this.getItemDisplayText(item)}
+                                ${this.getItemDisplayField(item)}
                                 <iron-icon icon="icons:close" .item=${item} @click=${this.onTokenClick}></iron-icon>
                             </div>
                         `)
