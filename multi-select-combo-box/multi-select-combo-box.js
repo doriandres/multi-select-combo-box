@@ -1,80 +1,100 @@
-import {PolymerElement} from '@polymer/polymer/polymer-element';
 import '@vaadin/vaadin-text-field/vaadin-text-field';
 import '@vaadin/vaadin-combo-box/vaadin-combo-box-light';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/iron-icons/iron-icons';
-import {template} from './multi-select-combo-box.html';
-export class MultiSelectComboBox extends PolymerElement {
-    static get is() {
-      return 'multi-select-combo-box';
-    }
-    static get properties() {
-      return {
-        items: {
-          type: Object,
-          value: () => []
-        },
-        selectedItems: {
-          value: () => [],
-          notify: true
-        },
-        label: String,
-        comboBoxValue: Object,
-        displayField: {
-          type: String
-        },
-        valueField: {
-          type: String
-        }
+import {
+  template
+} from './multi-select-combo-box.html';
+import {
+  LitElement
+} from 'lit-element';
+export class MultiSelectComboBox extends LitElement {
+  static get is() {
+    return 'multi-select-combo-box';
+  }
+  static get properties() {
+    return {
+      items: {
+        type: Array
+      },
+      selectedItems: {
+        type: Array
+      },
+      label: {
+        type: String
+      },
+      displayField: {
+        type: String,
+        attribute: 'display-field'
+      },
+      valueField: {
+        type: String,
+        attribute: 'value-field'
       }
     }
-    static get observers() {
-      return [
-        'comboBoxValueChange(comboBoxValue)'
-      ]
+  }
+  constructor() {
+    super();
+    this.items = [];
+    this.selectedItems = [];
+    this.label = '';
+    this.displayField = '';
+    this.valueField = '';
+  }
+  get value(){    
+    return this.valueField ? this.selectedItems.map(si => si[this.valueField]) : this.selectedItems;
+  }
+  render() {
+    this.items = [...this.items.sort((a, b)=> this.getItemDisplayText(a).localeCompare(this.getItemDisplayText(b)))];
+    return template(this);
+  }
+  get comboBox() {
+    return this.shadowRoot.getElementById('comboBox');
+  }
+  get textField() {
+    return this.shadowRoot.getElementById('textField');
+  }
+  set comboBoxValue(value) {
+    this.comboBox.value = value;
+  }
+  get comboBoxValue() {
+    return this.comboBox.value;
+  }
+  comboBoxValueChanged({detail : {value : comboBoxValue}}) {
+    if (!comboBoxValue) {
+      return;
     }
-    static get template(){
-        return template;
-    }
-    comboBoxValueChange(comboBoxValue) {
-      if (comboBoxValue) {
-        var selectedItem = this.items.find(item => {
-          if (this.valueField != null && this.valueField !== '' && item[this.valueField] != null) {
-            return item[this.valueField] == comboBoxValue;
-          }
-          return item == comboBoxValue;
-        });
-        this.push('selectedItems', selectedItem);
-        this.splice('items', this.items.indexOf(selectedItem), 1);
+
+    let selectedItem = this.items.find(item => {
+      if (this.valueField != null && this.valueField !== '' && item[this.valueField] != null) {
+        return item[this.valueField] == comboBoxValue;
+      } else {
+        return item == comboBoxValue;
       }
-      this.comboBoxValue = '';
-      setTimeout(() => {
-        this.$.comboBox.$.overlay._selectedItem = '';
-        this.$.textField.value = '';
-      });
+    });
+
+    this.selectedItems = [...this.selectedItems, selectedItem];    
+    this.items.splice(this.items.indexOf(selectedItem), 1)
+    this.items = [...this.items];    
+    this.comboBoxValue = '';
+  }
+  onTokenClick({target : {item}}) {    
+    this.removeSelected(item);    
+  }
+  removeSelected(item) {
+    this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+    this.selectedItems = [...this.selectedItems];
+    this.items = [...this.items, item];
+  }
+  onKeyDown(event) {
+    if (event.keyCode === 8 && this.selectedItems.length && this.textField.value === '') {
+      this.removeSelected(this.selectedItems[this.selectedItems.length - 1]);
     }
-    onTokenClick(event) {
-      this.removeSelected(event.model.item);
-      event.stopPropagation();
-    }
-    removeSelected(item) {
-      this.splice('selectedItems', this.selectedItems.indexOf(item), 1);
-      this.push('items', item);
-    }
-    onKeyDown(event) {
-      if (event.keyCode === 8 && this.selectedItems.length && this.$.tf.value === '') {
-        this.removeSelected(this.selectedItems[this.selectedItems.length - 1]);
-      }
-    }
-    getItemDisplayText(item) {
-      if (this.displayField != null && this.displayField !== '') {
-        if (item[this.displayField] != null) {
-          return item[this.displayField];
-        }
-      }
-      return item;
-    }
+  }
+  getItemDisplayText(item) {
+    return this.displayField ? item[this.displayField] : item;    
+  }
 }
-if(!customElements.get(MultiSelectComboBox.is)){
+if (!customElements.get(MultiSelectComboBox.is)) {
   customElements.define(MultiSelectComboBox.is, MultiSelectComboBox);
 }

@@ -1,17 +1,21 @@
-import { html } from "@polymer/polymer";
-import { styles } from './multi-select-combo-box.css';
-export const template = html`
-${styles}
-<vaadin-combo-box-light id="comboBox" items="[[items]]" value="{{comboBoxValue}}" item-value-path="[[valueField]]" item-label-path="[[displayField]]">
-    <template>[[getItemDisplayText(item)]]</template>
-    <vaadin-text-field on-keydown="onKeyDown" label="[[label]]" id="textField">
-        <div slot="prefix" id="tokens">
-            <template is="dom-repeat" items="[[selectedItems]]">
-                <div class="token" on-click="onTokenClick">[[getItemDisplayText(item)]]
-                    <iron-icon icon="icons:close"></iron-icon>
+import {html} from 'lit-element';
+import {styles} from './multi-select-combo-box.css';
+export const template = function (instance) { return (function () {
+    return html `
+        ${styles}
+        <vaadin-combo-box-light id="comboBox" .items=${this.items} item-value-path=${this.valueField} item-label-path=${this.displayField} @value-changed=${this.comboBoxValueChanged}>
+            <vaadin-text-field id="textField" @keydown=${this.onKeyDown} label=${this.label}>
+                <div id="tokens" slot="prefix">
+                    ${
+                        this.selectedItems.map(item => html`
+                            <div class="token">
+                                ${this.getItemDisplayText(item)}
+                                <iron-icon icon="icons:close" .item=${item} @click=${this.onTokenClick}></iron-icon>
+                            </div>
+                        `)
+                    }
                 </div>
-            </template>
-        </div>
-    </vaadin-text-field>
-</vaadin-combo-box-light>
-`;
+            </vaadin-text-field>
+        </vaadin-combo-box-light>
+    `;
+}).bind(instance)();}

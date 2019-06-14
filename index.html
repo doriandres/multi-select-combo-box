@@ -10,7 +10,9 @@
 </head>
 
 <body>
-  <multi-select-combo-box items='["List item 1", "List item 2", "List item 3", "List item 4", "List item 5"]'>
+  <multi-select-combo-box
+    items='[{ "id": 1, "name": "Name1" }, { "id": 2, "name": "Name2" }, { "id": 3, "name": "Name3" }, { "id": 4, "name": "Name4" }, { "id": 5, "name": "Name5" }]'
+    value-field="id" display-field="name">
   </multi-select-combo-box>
 </body>
 
