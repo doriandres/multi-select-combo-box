@@ -156,6 +156,7 @@ export class MultiSelectComboBox extends LitElement {
     this.items.splice(this.items.indexOf(selectedItem), 1)
     this.items = [...this.items];
     this.comboBoxValue = '';
+    this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
   }
 
   /**

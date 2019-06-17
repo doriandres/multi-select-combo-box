@@ -34985,6 +34985,9 @@ class MultiSelectComboBox extends _litElement.LitElement {
     this.items.splice(this.items.indexOf(selectedItem), 1);
     this.items = [...this.items];
     this.comboBoxValue = '';
+    this.dispatchEvent(new CustomEvent('change', {
+      bubbles: true
+    }));
   }
   /**
    * Handles the click event from the tokens "x" button
@@ -35048,10 +35051,52 @@ require("@polymer/iron-demo-helpers/demo-pages-shared-styles");
 
 require("./multi-select-combo-box/multi-select-combo-box");
 
-require("@vaadin/vaadin-combo-box/vaadin-combo-box-light");
+var _litElement = require("lit-element");
 
-require("@vaadin/vaadin-text-field/vaadin-text-field");
-},{"@webcomponents/webcomponentsjs/webcomponents-loader":"node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js","@polymer/iron-demo-helpers/demo-pages-shared-styles":"node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js","./multi-select-combo-box/multi-select-combo-box":"multi-select-combo-box/multi-select-combo-box.js","@vaadin/vaadin-combo-box/vaadin-combo-box-light":"node_modules/@vaadin/vaadin-combo-box/vaadin-combo-box-light.js","@vaadin/vaadin-text-field/vaadin-text-field":"node_modules/@vaadin/vaadin-text-field/vaadin-text-field.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+class MyComponent extends _litElement.LitElement {
+  static get is() {
+    return 'my-component';
+  }
+
+  get multiSelectComboBox() {
+    return this.shadowRoot.querySelector('multi-select-combo-box');
+  }
+
+  get items() {
+    return [{
+      "id": 1,
+      "name": "Name1"
+    }, {
+      "id": 2,
+      "name": "Name2"
+    }, {
+      "id": 3,
+      "name": "Name3"
+    }, {
+      "id": 4,
+      "name": "Name4"
+    }, {
+      "id": 5,
+      "name": "Name5"
+    }];
+  }
+
+  render() {
+    return _litElement.html`
+            <multi-select-combo-box .items=${this.items} @change=${this.onChange} value-field="id" display-field="name">
+            </multi-select-combo-box>
+        `;
+  }
+
+  onChange(event) {
+    console.dir(event);
+    console.dir(this.multiSelectComboBox.value);
+  }
+
+}
+
+customElements.define(MyComponent.is, MyComponent);
+},{"@webcomponents/webcomponentsjs/webcomponents-loader":"node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js","@polymer/iron-demo-helpers/demo-pages-shared-styles":"node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js","./multi-select-combo-box/multi-select-combo-box":"multi-select-combo-box/multi-select-combo-box.js","lit-element":"node_modules/lit-element/lit-element.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -35079,7 +35124,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62355" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62351" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
